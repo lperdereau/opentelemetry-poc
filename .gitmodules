@@ -1,0 +1,3 @@
+[submodule "sample-django"]
+	path = sample-django
+	url = https://github.com/SigNoz/sample-django
