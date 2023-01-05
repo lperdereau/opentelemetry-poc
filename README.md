@@ -5,6 +5,7 @@ docker compose up -d
 ```
 
 Browse a few to generate trace
+
 http://localhost:8000
 
 http://localhost:8000/admin/
