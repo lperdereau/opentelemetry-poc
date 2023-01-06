@@ -1,11 +1,29 @@
 version: "3"
 services:
+  loki:
+    image: grafana/loki:2.6.1
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:2.6.1
+    ports:
+      - "9081:9080"
+    volumes:
+      - logs:/var/log
+    command: -config.file=/etc/promtail/config.yml
+
   api:
     build: sample-django
     ports:
       - 8000:8000
+    command: ["opentelemetry-instrument", "gunicorn", "mysite.wsgi", "--workers", "2", "--threads", "2", "--reload", "--bind", "0.0.0.0:8000"]
+    volumes:
+      - logs:/var/log
     environment:
       - OTEL_EXPORTER_OTLP_INSECURE=True
+      - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
       - OTEL_EXPORTER_OTLP_ENDPOINT=tempo:4317
       - OTEL_SERVICE_NAME=sample-api
       - OTEL_METRICS_EXPORTER=none
@@ -45,3 +63,6 @@ services:
       - GF_AUTH_DISABLE_LOGIN_FORM=true
     ports:
       - "3000:3000"
+
+volumes:
+  logs:
