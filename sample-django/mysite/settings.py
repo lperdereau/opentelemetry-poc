@@ -146,7 +146,7 @@ LOGGING = {
     },
     'formatters': {
         'standard': {
-            'format': '[%(asctime)s][%(levelname).4s] %(message)s - %(pathname)s:%(lineno)s',
+            'format': '%(asctime)s %(levelname)s %(name)s %(filename)s:%(lineno)d trace_id=%(otelTraceID)s span_id=%(otelSpanID)s resource.service.name=%(otelServiceName)s - %(message)s',
             'datefmt': '%H:%M:%S',
         },
     },
@@ -156,6 +156,12 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
         },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'formatter': 'standard',
+            'filename': '/var/log/test_loki.log',
+        },
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
@@ -164,17 +170,17 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'propagate': False,
             'level': 'INFO',
         },
         'django.request': {
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'propagate': False,
             'level': 'INFO',
         },
         '': {
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'level': 'INFO',
             'propagate': True,
         }

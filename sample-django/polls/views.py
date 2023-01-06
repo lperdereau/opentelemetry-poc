@@ -8,19 +8,6 @@ from django.views import generic
 
 from .models import Choice, Question
 
-from opentelemetry import trace
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import (
-    ConsoleSpanExporter,
-    SimpleSpanProcessor,
-)
-
-trace.set_tracer_provider(TracerProvider())
-
-trace.get_tracer_provider().add_span_processor(
-    SimpleSpanProcessor(ConsoleSpanExporter())
-)
-
 logger = logging.getLogger(__name__)
 
 class IndexView(generic.ListView):

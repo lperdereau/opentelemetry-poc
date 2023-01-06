@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.6
+FROM python:3.10
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -25,6 +25,6 @@ RUN python manage.py migrate && \
   python manage.py createsuperuser --no-input && \
   opentelemetry-bootstrap --action=install
 
-CMD [ "opentelemetry-instrument", "gunicorn", "mysite.wsgi", "-c", "gunicorn.config.py", "--workers", "2", "--threads", "2", "--reload", "--bind", "0.0.0.0:8000" ]
+CMD [ "opentelemetry-instrument", "gunicorn", "-c", "gunicorn.config.py", "mysite.wsgi", "--workers", "2", "--threads", "2", "--reload", "--bind", "0.0.0.0:8000" ]
 
 EXPOSE 8000
