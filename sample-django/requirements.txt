@@ -1,0 +1,11 @@
+asgiref==3.2.10
+Django==3.1.13
+gunicorn==20.0.4
+psycopg2==2.9.3
+pytz==2020.1
+sqlparse==0.3.1
+whitenoise==5.2.0
+dj-database-url==0.5.0
+opentelemetry-distro==0.30b1
+opentelemetry-instrumentation==0.30b1
+opentelemetry-exporter-otlp==1.11.1
