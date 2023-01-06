@@ -28,6 +28,15 @@ services:
       - OTEL_SERVICE_NAME=sample-api
       - OTEL_METRICS_EXPORTER=none
       - DJANGO_SETTINGS_MODULE=mysite.settings
+      - HTTP_BIN_SERVER_URL=http://httpbin:8000
+
+  httpbin:
+    image: mendhak/http-https-echo:28
+    environment:
+      - HTTP_PORT=8000
+    ports:
+      - "8080:8000"
+    restart: always
 
   tempo:
     image: grafana/tempo:latest

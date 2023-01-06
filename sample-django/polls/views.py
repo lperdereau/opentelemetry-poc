@@ -1,4 +1,6 @@
 import logging
+import requests
+import os
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -19,7 +21,9 @@ class IndexView(generic.ListView):
         Return the last five published questions (not including those set to be
         published in the future).
         """
-        logger.info('AAAAAAA')
+        logger.info('Make request to external server')
+        requests.get(os.environ['HTTP_BIN_SERVER_URL'] + '/get')
+
         return Question.objects.filter(
             pub_date__lte=timezone.now()
         ).order_by('-pub_date')[:5]
