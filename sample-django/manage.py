@@ -2,18 +2,8 @@
 import os
 import sys
 
-from opentelemetry.instrumentation.django import DjangoInstrumentor
-from opentelemetry.instrumentation.logging import LoggingInstrumentor
-from opentelemetry.instrumentation.sqlite3 import SQLite3Instrumentor
-
-
-
 if __name__ == '__main__':
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
-
-    DjangoInstrumentor().instrument()
-    LoggingInstrumentor().instrument()
-    SQLite3Instrumentor().instrument()
 
     try:
         from django.core.management import execute_from_command_line

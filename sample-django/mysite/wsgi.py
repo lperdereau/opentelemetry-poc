@@ -11,6 +11,14 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+from opentelemetry.instrumentation.django import DjangoInstrumentor
+from opentelemetry.instrumentation.logging import LoggingInstrumentor
+from opentelemetry.instrumentation.sqlite3 import SQLite3Instrumentor
+
+DjangoInstrumentor().instrument()
+LoggingInstrumentor().instrument()
+SQLite3Instrumentor().instrument()
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
 
 application = get_wsgi_application()
