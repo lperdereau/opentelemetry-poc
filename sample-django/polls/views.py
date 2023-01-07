@@ -22,7 +22,8 @@ class IndexView(generic.ListView):
         published in the future).
         """
         logger.info('Make request to external server')
-        requests.get(os.environ['HTTP_BIN_SERVER_URL'] + '/get')
+        if os.environ.get('HTTP_SERVER_URL'):
+            requests.get(os.environ['HTTP_SERVER_URL'])
 
         return Question.objects.filter(
             pub_date__lte=timezone.now()

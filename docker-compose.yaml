@@ -27,16 +27,27 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=tempo:4317
       - OTEL_SERVICE_NAME=sample-api
       - OTEL_METRICS_EXPORTER=none
+      - OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=tempo:4317
       - DJANGO_SETTINGS_MODULE=mysite.settings
-      - HTTP_BIN_SERVER_URL=http://httpbin:8000
+      - HTTP_SERVER_URL=http://api-2:8000/polls/
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
 
-  httpbin:
-    image: mendhak/http-https-echo:28
-    environment:
-      - HTTP_PORT=8000
+  api-2:
+    build: sample-django
     ports:
-      - "8080:8000"
-    restart: always
+      - 8001:8000
+    command: ["opentelemetry-instrument", "gunicorn", "mysite.wsgi", "--workers", "2", "--threads", "2", "--reload", "--bind", "0.0.0.0:8000"]
+    volumes:
+      - logs:/var/log
+    environment:
+      - OTEL_EXPORTER_OTLP_INSECURE=True
+      - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+      - OTEL_EXPORTER_OTLP_ENDPOINT=tempo:4317
+      - OTEL_SERVICE_NAME=sample-api-2
+      - OTEL_METRICS_EXPORTER=none
+      - OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=tempo:4317
+      - DJANGO_SETTINGS_MODULE=mysite.settings
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,api,api-2
 
   tempo:
     image: grafana/tempo:latest
