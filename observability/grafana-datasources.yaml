@@ -13,6 +13,30 @@ datasources:
   editable: false
   jsonData:
     httpMethod: GET
+- name: Mimir metrics
+  type: prometheus
+  uid: mimir-metrics
+  access: proxy
+  orgId: 1
+  url: http://mimir:9009/
+  basicAuth: false
+  isDefault: false
+  version: 1
+  editable: false
+  jsonData:
+    httpMethod: GET
+- name: Mimir Distributor
+  type: prometheus
+  uid: mimir-distributor
+  access: proxy
+  orgId: 1
+  url: http://mimir:9009/prometheus
+  basicAuth: false
+  isDefault: false
+  version: 1
+  editable: false
+  jsonData:
+    httpMethod: GET
 - name: Tempo
   type: tempo
   access: proxy
@@ -26,12 +50,39 @@ datasources:
   uid: tempo
   jsonData:
     httpMethod: GET
+    tracesToLogs:
+      datasourceUid: 'loki'
+      tags: ['job', 'instance', 'pod', 'namespace']
+      mappedTags: [{ key: 'service.name', value: 'service' }]
+      mapTagNamesEnabled: false
+      spanStartTimeShift: '1h'
+      spanEndTimeShift: '1h'
+      filterByTraceID: false
+      filterBySpanID: false
+    tracesToMetrics:
+      datasourceUid: 'prom'
+      tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+      queries:
+        - name: 'Sample query'
+          query: 'sum(rate(tempo_spanmetrics_latency_bucket{$__tags}[5m]))'
     serviceMap:
-      datasourceUid: prometheus
+      datasourceUid: 'prometheus'
+    search:
+      hide: false
+    nodeGraph:
+      enabled: true
+    lokiSearch:
+      datasourceUid: 'loki'
 - name: Loki
+  uid: loki
   type: loki
   access: proxy
   orgId: 1
   url: http://loki:3100
   jsonData:
     maxLines: 1000
+    derivedFields:
+      - datasourceUid: tempo
+        matcherRegex: "trace_id=(\\w+)"
+        name: TraceID
+        url: '$${__value.raw}'

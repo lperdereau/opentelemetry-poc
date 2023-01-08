@@ -41,6 +41,8 @@ metrics_generator:
     remote_write:
       - url: http://prometheus:9090/api/v1/write
         send_exemplars: true
+      - url: http://mimir:9009/api/v1/push
+        send_exemplars: true
 
 storage:
   trace:

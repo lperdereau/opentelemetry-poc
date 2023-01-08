@@ -26,7 +26,7 @@ services:
       - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
       - OTEL_EXPORTER_OTLP_ENDPOINT=tempo:4317
       - OTEL_SERVICE_NAME=sample-api
-      - OTEL_METRICS_EXPORTER=none
+      # - OTEL_METRICS_EXPORTER=none
       - OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=tempo:4317
       - DJANGO_SETTINGS_MODULE=mysite.settings
       - HTTP_SERVER_URL=http://api-2:8000/polls/
@@ -44,7 +44,7 @@ services:
       - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
       - OTEL_EXPORTER_OTLP_ENDPOINT=tempo:4317
       - OTEL_SERVICE_NAME=sample-api-2
-      - OTEL_METRICS_EXPORTER=none
+      # - OTEL_METRICS_EXPORTER=none
       - OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=tempo:4317
       - DJANGO_SETTINGS_MODULE=mysite.settings
       - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,api,api-2
@@ -81,6 +81,7 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_FEATURE_TOGGLES_ENABLE=tempoApmTable
     ports:
       - "3000:3000"
 
