@@ -36,7 +36,7 @@ datasources:
       filterByTraceID: false
       filterBySpanID: false
     tracesToMetrics:
-      datasourceUid: 'prom'
+      datasourceUid: 'prometheus'
       tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
       queries:
         - name: 'Sample query'
@@ -60,5 +60,5 @@ datasources:
     derivedFields:
       - datasourceUid: tempo
         matcherRegex: "trace_id=(\\w+)"
-        name: TraceID
+        name: trace_id
         url: '$${__value.raw}'
