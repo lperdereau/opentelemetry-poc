@@ -13,30 +13,6 @@ datasources:
   editable: false
   jsonData:
     httpMethod: GET
-- name: Mimir metrics
-  type: prometheus
-  uid: mimir-metrics
-  access: proxy
-  orgId: 1
-  url: http://mimir:9009/
-  basicAuth: false
-  isDefault: false
-  version: 1
-  editable: false
-  jsonData:
-    httpMethod: GET
-- name: Mimir Distributor
-  type: prometheus
-  uid: mimir-distributor
-  access: proxy
-  orgId: 1
-  url: http://mimir:9009/prometheus
-  basicAuth: false
-  isDefault: false
-  version: 1
-  editable: false
-  jsonData:
-    httpMethod: GET
 - name: Tempo
   type: tempo
   access: proxy
