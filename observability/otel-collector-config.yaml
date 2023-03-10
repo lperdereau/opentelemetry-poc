@@ -1,0 +1,19 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+      grpc:
+
+exporters:
+  otlphttp:
+    endpoint: http://nginx:80
+    tls:
+      insecure: true
+    headers:
+      authorization: Basic dGVzdDp0ZXN0
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [otlphttp]
